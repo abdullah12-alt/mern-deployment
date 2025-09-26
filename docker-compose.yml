@@ -14,7 +14,7 @@ services:
     environment:
       - PORT=5000
       - MONGODB_URI=mongodb://mongodb:27017/user-management
-      - JWT_SECRET=;$kLR~tmZc^[O#,yM.Y3#g+~IVpf+8s@eH)drBmzbl?+$!wyS8%QI)]Jq745(:|
+      - JWT_SECRET=";$kLR~tmZc^[O#,yM.Y3#g+~IVpf+8s@eH)drBmzbl?+$!wyS8%QI)]Jq745(:|"
     depends_on:
       - mongodb
 
