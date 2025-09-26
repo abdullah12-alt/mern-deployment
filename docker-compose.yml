@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  # ===================
+  # Backend (Node/Express)
+  # ===================
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongodb:27017/user-management
+      - JWT_SECRET=;$kLR~tmZc^[O#,yM.Y3#g+~IVpf+8s@eH)drBmzbl?+$!wyS8%QI)]Jq745(:|
+    depends_on:
+      - mongodb
+
+  # ===================
+  # Frontend (React)
+  # ===================
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+
+  # ===================
+  # Database (MongoDB)
+  # ===================
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_server
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

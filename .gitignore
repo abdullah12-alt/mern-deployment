@@ -1,0 +1,87 @@
+# ========================================
+# Node
+# ========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+.pnpm-lock.yaml
+
+# ========================================
+# Environment
+# ========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ========================================
+# Logs
+# ========================================
+logs
+*.log
+*.log.*
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# ========================================
+# Build / Dist
+# ========================================
+dist/
+build/
+.tmp/
+.temp/
+
+# ========================================
+# React Frontend
+# ========================================
+# If frontend is inside a "client" folder:
+client/node_modules/
+client/build/
+client/.env
+
+# ========================================
+# Database
+# ========================================
+*.sqlite
+*.db
+*.mongo
+dump/
+
+# ========================================
+# System / Editor
+# ========================================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+*.tmp
+.vscode/
+.idea/
+*.iml
+
+# ========================================
+# Testing
+# ========================================
+coverage/
+.nyc_output/
+
+# ========================================
+# Docker
+# ========================================
+docker-compose.override.yml
+*.local.yml
+
+# ========================================
+# Misc
+# ========================================
+*.tgz
+*.gz
+*.zip
