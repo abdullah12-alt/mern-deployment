@@ -2,6 +2,7 @@ require('dotenv').config();  //load environment variables from .env file
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const User = require('./models/User');
 
 
 const app = express();
@@ -22,10 +23,70 @@ const connectDB = async ()=>{
             useUnifiedTopology:true,
         })
         console.log('MongoDB connected successfully!');
+        
+        // Seed users after successful DB connection
+        await seedUsers();
     }
     catch  (error) {
         console.error('MongoDB connection error:', error);
         process.exit(1);
+    }
+}
+
+// Function to seed users
+const seedUsers = async () => {
+    try {
+        // Check if users already exist
+        const userCount = await User.countDocuments();
+        
+        if (userCount > 0) {
+            console.log('Users already exist in database. Skipping seeding.');
+            return;
+        }
+
+        // Default users to seed
+        const defaultUsers = [
+            {
+                name: 'Admin User',
+                email: 'admin@example.com',
+                password: 'admin123',
+                role: 'admin',
+                isActive: true
+            },
+            {
+                name: 'John Doe',
+                email: 'john@example.com',
+                password: 'user123',
+                role: 'user',
+                isActive: true
+            },
+            {
+                name: 'Jane Smith',
+                email: 'jane@example.com',
+                password: 'user123',
+                role: 'user',
+                isActive: true
+            },
+            {
+                name: 'Bob Wilson',
+                email: 'bob@example.com',
+                password: 'user123',
+                role: 'user',
+                isActive: false
+            }
+        ];
+
+        // Create users
+        const createdUsers = await User.create(defaultUsers);
+        console.log(`Successfully seeded ${createdUsers.length} users to the database.`);
+        
+        console.log('Seeded users:');
+        createdUsers.forEach(user => {
+            console.log(`- ${user.name} (${user.email}) - Role: ${user.role}, Active: ${user.isActive}`);
+        });
+        
+    } catch (error) {
+        console.error('Error seeding users:', error);
     }
 }
 
