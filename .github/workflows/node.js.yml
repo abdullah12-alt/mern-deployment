@@ -36,17 +36,17 @@ jobs:
           npm ci
 
   
-      # # Optional: Deploy to EC2
-      # - name: Deploy to EC2
-      #   if: github.ref == 'refs/heads/main'
-      #   uses: appleboy/ssh-action@v1.0.0
-      #   with:
-      #     host: ${{ secrets.EC2_HOST }}
-      #     username: ${{ secrets.EC2_USER }}
-      #     key: ${{ secrets.EC2_SSH_KEY }}
-      #     script: |
-      #       cd /var/www/mern-app
-      #       git pull origin main
-      #       cd client && npm run build
-      #       cd ../server && npm install --legacy-peer-deps
-      #       pm2 restart all
+      # Optional: Deploy to EC2
+      - name: Deploy to EC2
+        if: github.ref == 'refs/heads/main'
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /var/www/mern-app
+            git pull origin main
+            cd client && npm run build
+            cd ../server && npm install --legacy-peer-deps
+            pm2 restart all
