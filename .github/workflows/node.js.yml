@@ -44,7 +44,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /var/www/mern-app
+            cd /var/www/mern-app/mern-deployment
             git pull origin main
             cd client && npm run build
             cd ../server && npm install --legacy-peer-deps
