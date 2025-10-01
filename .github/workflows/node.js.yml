@@ -35,8 +35,7 @@ jobs:
           cd server
           npm ci
 
-  
-      # Optional: Deploy to EC2
+      # Deploy to EC2
       - name: Deploy to EC2
         if: github.ref == 'refs/heads/main'
         uses: appleboy/ssh-action@v1.0.0
@@ -49,4 +48,4 @@ jobs:
             git pull origin main
             cd client && npm run build
             cd ../server && npm install --legacy-peer-deps
-            pm2 restart all
+            pm2 restart mern-app || pm2 start server.js --name mern-app
