@@ -1,5 +1,5 @@
 // client/src/components/Admin/UserTable.js
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import axios from '../../axios';
 import {
   Table,
@@ -43,7 +43,7 @@ function UserTable() {
     setModalOpen(true);
   };
 
-  const fetchUsers = async (page = 1) => {
+  const fetchUsers = useCallback(async (page = 1) => {
     setLoading(true);
     try {
       const params = {
@@ -65,11 +65,11 @@ function UserTable() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [search, roleFilter, activeFilter, sort]);
 
   useEffect(() => {
     fetchUsers();
-  }, [search, roleFilter, activeFilter, sort]);
+  }, [fetchUsers]);
 
   const handlePageChange = (event, value) => {
     fetchUsers(value);
