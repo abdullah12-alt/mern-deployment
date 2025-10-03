@@ -11,7 +11,11 @@ const app = express();
 //middlewares
 app.use(express.json());
 app.use(cors({
-  origin: "http://ec2-16-171-132-75.eu-north-1.compute.amazonaws.com", 
+  origin: [
+    "http://ec2-16-171-132-75.eu-north-1.compute.amazonaws.com", 
+    "http://16.171.132.75",
+    "http://localhost:3000"  // for local development
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
