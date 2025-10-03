@@ -1,6 +1,7 @@
 // routes/users.js
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 const { auth, adminAuth } = require('../middleware/auth');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
@@ -33,11 +34,21 @@ const getPaginationSort = (req) => {
 // @access  Public (for now; add auth if needed)
 router.post('/', async (req, res) => {
   try {
+    // Trim whitespace from string inputs
     const { name, email, password, role } = req.body;
-    let user = await User.findOne({ email });
+    const trimmedName = name?.trim();
+    const trimmedEmail = email?.trim();
+    const trimmedPassword = password?.trim();
+    
+    let user = await User.findOne({ email: trimmedEmail });
     if (user) return res.status(400).json({ msg: 'User already exists' });
 
-    user = new User({ name, email, password, role: role || 'user' });
+    user = new User({ 
+      name: trimmedName, 
+      email: trimmedEmail, 
+      password: trimmedPassword, 
+      role: role || 'user' 
+    });
     await user.save();
 
     // Generate JWT (for login response; we'll add full login later)
@@ -94,7 +105,12 @@ router.get('/:id', auth, adminAuth, async (req, res) => {
 router.put('/:id', auth, adminAuth, async (req, res) => {
   try {
     const updates = req.body;
+    
+    // Trim whitespace from string fields
+    if (updates.name) updates.name = updates.name.trim();
+    if (updates.email) updates.email = updates.email.trim();
     if (updates.password) {
+      updates.password = updates.password.trim();
       // Re-hash if password updated
       updates.password = await bcrypt.hash(updates.password, 12);
     }
@@ -129,9 +145,13 @@ router.delete('/:id', auth, adminAuth, async (req, res) => {
 // @access  Public
 router.post('/login', async (req, res) => {
   try {
+    // Trim whitespace from email and password
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user || !(await user.comparePassword(password))) {
+    const trimmedEmail = email?.trim();
+    const trimmedPassword = password?.trim();
+    
+    const user = await User.findOne({ email: trimmedEmail });
+    if (!user || !(await user.comparePassword(trimmedPassword))) {
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
 
